@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى ثروتي ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;700;900&display=swap');
+
+        :root {
+            --maroon: #590d22;
+            --pink: #ff758f;
+            --soft-pink: rgba(255, 117, 143, 0.4);
+            --gold: #d4af37;
+            --glass: rgba(255, 255, 255, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background: #1a0208; color: white; font-family: 'Cairo', sans-serif;
+            overflow-x: hidden; scroll-behavior: smooth;
+        }
+
+        /* 1. الخلفية التفاعلية الساحرة */
+        #bg-container { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .bg-element {
+            position: absolute; 
+            animation: moveElement linear infinite;
+            filter: drop-shadow(0 0 8px var(--pink));
+            opacity: 0.7;
+        }
+        @keyframes moveElement {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-20vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* 2. مؤثرات الوميض والنبض للأزرار */
+        .interactive-element {
+            cursor: pointer;
+            transition: 0.3s;
+            animation: heartBeat 2s infinite ease-in-out;
+        }
+        @keyframes heartBeat {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--pink)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px var(--pink)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--pink)); }
+        }
+
+        /* 3. تأثير انفجار القلوب عند الضغط */
+        .burst-heart {
+            position: fixed; pointer-events: none; z-index: 9999;
+            font-size: 20px; animation: flyBurst 1s ease-out forwards;
+        }
+        @keyframes flyBurst {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.5) rotate(var(--dr)); opacity: 0; }
+        }
+
+        /* شاشة التحميل */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .heart-main {
+            width: 100px; height: 90px; background: #333; position: relative;
+            clip-path: path('M50 83.7l-4.2-3.8C18.2 55.1 0 38.6 0 18.5 0 8.3 8.3 0 18.5 0c5.8 0 11.3 2.7 15 6.9 3.7-4.2 9.2-6.9 15-6.9C57.7 0 66 8.3 66 18.5c0 20.1-18.2 36.6-45.8 61.4L50 83.7z');
+        }
+        .heart-fill { position: absolute; bottom: 0; width: 100%; height: 0%; background: var(--pink); transition: 0.5s; }
+
+        /* الكروت الشفافة (Poker Style) */
+        .cards-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 10px; }
+        .card { width: 160px; height: 230px; perspective: 1000px; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; }
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px);
+            background: var(--glass);
+        }
+        .card-front { font-size: 4rem; color: var(--pink); box-shadow: 0 0 20px rgba(255,117,143,0.3); }
+        .card-back { 
+            background: var(--maroon); color: white; transform: rotateY(180deg); 
+            font-size: 1.8rem; font-weight: 900; text-align: center; padding: 10px; border-color: var(--pink);
+        }
+
+        /* الأقسام وتصميم الصور */
+        .section {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px; opacity: 0; transform: translateY(40px); transition: 1s;
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+        .photo-frame {
+            background: white; padding: 10px 10px 45px; width: 310px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); margin-bottom: 60px; transform: rotate(-2deg);
+        }
+        .photo-frame img { width: 100%; }
+        .photo-frame p { color: #333; font-weight: bold; margin-top: 15px; text-align: center; font-size: 1.2rem; }
+
+        /* الزرار النهائي */
+        .final-btn {
+            background: var(--maroon); border: 2px solid var(--gold); padding: 30px; 
+            border-radius: 20px; text-align: center; width: 250px;
+        }
+
+        #letter-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: none; align-items: center; justify-content: center; z-index: 20000; padding: 20px;
+        }
+        .letter-content {
+            background: #fffcf5; color: #2c1810; padding: 40px; border-radius: 5px;
+            width: 100%; max-width: 500px; border: 2px solid var(--gold); font-family: 'Amiri', serif;
+        }
+        #typewriter { font-size: 1.7rem; line-height: 1.8; }
+    </style>
+</head>
+<body onclick="handleGlobalClick(event)">
+
+    <div id="bg-container"></div>
+    <audio id="loveAudio" src="music.mp3" loop></audio>
+
+    <div id="loader">
+        <div class="heart-main"><div class="heart-fill" id="fill"></div></div>
+        <h2 id="ltxt" style="margin-top:25px;">استني ياحب معلش🥹💗</h2>
+    </div>
+
+    <div id="q-screen" style="display:none; height:100vh; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <div class="interactive-element" style="background:var(--glass); backdrop-filter:blur(10px); padding:25px 60px; border-radius:100px; border:2px solid var(--pink); font-size:3.2rem; margin-bottom:50px;">جاهزة؟🙈</div>
+        <div style="position:relative; width:300px; height:100px;">
+            <button id="yes-btn" class="interactive-element" style="padding:15px 50px; border-radius:50px; border:none; background:var(--pink); color:white; font-size:2rem; position:absolute; left:0;" onclick="init()">اه</button>
+            <button id="no-btn" style="padding:15px 40px; border-radius:50px; border:none; background:#444; color:white; font-size:1.5rem; position:absolute; right:0;" onmouseover="moveNo()">لا</button>
+        </div>
+        <p style="margin-top:50px; font-size:1.5rem;">يلا بسرعه عامل لك جمدان🥺</p>
+    </div>
+
+    <div id="main-site" style="display:none;">
+        <div class="section">
+            <div style="background:var(--maroon); padding:50px; border-radius:30px; text-align:center; border:1px solid var(--pink);">
+                <h2 style="color:var(--pink); font-size:2rem;">💗 بحبك 💗</h2>
+                <h1 style="font-size:6rem; font-weight:900; color:var(--pink);">ثروة</h1>
+            </div>
+        </div>
+
+        <div class="section">
+            <div style="background:var(--glass); backdrop-filter:blur(10px); padding:35px; border-radius:20px; text-align:center; border:1px solid var(--pink); width:90%;">
+                <h3 style="font-size:1.8rem;">يوم ميلادي يوم ما عرفتك واتعلقت بيكي</h3>
+                <h1 style="color:var(--pink); font-size:3.5rem; margin:20px 0;">30/1/2024</h1>
+                <p style="font-size:1.4rem;">بداية عمري كانت معاكي (الساعة 10م)</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-bottom:20px;">هيفضل شغال طول ما احنا مع بعض⌛⏳</h2>
+            <div id="timer" style="font-size:1.8rem; background:rgba(0,0,0,0.3); padding:25px; border-radius:20px; border:1px solid var(--pink); direction:ltr; font-weight:bold;"></div>
+        </div>
+
+        <div class="section">
+            <h1 style="color:var(--pink); margin-bottom:40px; font-size:3rem;">اقفي متجريش🥺</h1>
+            <div class="interactive-element" style="background:var(--soft-pink); padding:20px; margin:10px; border-radius:15px; width:80%; text-align:center; font-size:2rem; border-right:8px solid var(--pink);">بحبك</div>
+            <div class="interactive-element" style="background:var(--soft-pink); padding:20px; margin:10px; border-radius:15px; width:80%; text-align:center; font-size:2rem; border-right:8px solid var(--pink);">بموتتتت فيكييي</div>
+            <div class="interactive-element" style="background:var(--soft-pink); padding:20px; margin:10px; border-radius:15px; width:80%; text-align:center; font-size:2rem; border-right:8px solid var(--pink);">بعشقكك🥹</div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-bottom:30px; color:var(--pink); font-size:1.8rem;">افتحي الكروت بالترتيييب🙆🏿‍♂️🫂</h2>
+            <div class="cards-container">
+                <div class="card interactive-element" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-face card-front">1 ❤️</div>
+                        <div class="card-face card-back">محبتش</div>
+                    </div>
+                </div>
+                <div class="card interactive-element" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-face card-front">2 ❤️</div>
+                        <div class="card-face card-back">ولا بحب</div>
+                    </div>
+                </div>
+                <div class="card interactive-element" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-face card-front">3 ❤️</div>
+                        <div class="card-face card-back">ولا هحب حد</div>
+                    </div>
+                </div>
+                <div class="card interactive-element" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-face card-front">4 ❤️</div>
+                        <div class="card-face card-back">زي ما بحبك ياحياتي ياعمري انتي💋</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-bottom:50px; font-size:2rem;">سنيني وأيامي اللي عشتها بجد🥺👇</h2>
+            <div class="photo-frame"><img src="photo4.jpg"><p>أنا والقمر🌝💗</p></div>
+            <div class="photo-frame" style="transform:rotate(3deg)"><img src="photo3.jpg"><p>اتمنى اعيش حياتي كلها في الحنية والدفا ده♡🥺</p></div>
+            <div class="photo-frame" style="transform:rotate(-4deg)"><img src="photo1.jpg"><p>♥اتنين بس احنا واحد، سوا♥</p></div>
+            <div class="photo-frame" style="transform:rotate(2deg)"><img src="photo5.jpg"><p>انتي بتاعتي انا بس يا ثروتي صح؟ ♕🥺</p></div>
+            <div class="photo-frame"><img src="photo2.jpg"><p>💍قدام الناس، انا وانت بقينا لبعض يا حبيبي💍</p></div>
+        </div>
+
+        <div class="section">
+            <div class="final-btn interactive-element" onclick="showLetter()">
+                <p>لسه مخلصناش</p>
+                <h2 style="margin-top:10px; color:var(--gold);">بحبك ✉️</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="letter-modal">
+        <div class="letter-content">
+            <h1 style="color:var(--maroon); border-bottom:2px solid var(--gold); padding-bottom:10px; margin-bottom:20px;">ثروة</h1>
+            <div id="typewriter"></div>
+            <button style="margin-top:30px; background:var(--maroon); color:white; border:none; padding:10px 30px; border-radius:5px; cursor:pointer;" onclick="document.getElementById('letter-modal').style.display='none'">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        // لودينج
+        setTimeout(() => { document.getElementById('fill').style.height='50%'; document.getElementById('ltxt').innerText='خلاص ياروحي اهو🙆🏿‍♂️💗'; }, 2000);
+        setTimeout(() => { document.getElementById('fill').style.height='100%'; document.getElementById('ltxt').innerText='خشي يا قمري بقى🌝💋'; }, 4000);
+        setTimeout(() => { document.getElementById('loader').style.display='none'; document.getElementById('q-screen').style.display='flex'; }, 6000);
+
+        function moveNo() {
+            const btn = document.getElementById('no-btn');
+            btn.style.left = Math.random() * 70 + 'vw';
+            btn.style.top = Math.random() * 70 + 'vh';
+        }
+
+        function init() {
+            document.getElementById('q-screen').style.display = 'none';
+            document.getElementById('main-site').style.display = 'block';
+            document.getElementById('loveAudio').play().catch(()=>{});
+            startTimer();
+            spawnBackground();
+        }
+
+        // نافورة القلوب عند كل ضغطة
+        function handleGlobalClick(e) {
+            for(let i=0; i<12; i++) {
+                const h = document.createElement('div');
+                h.className = 'burst-heart';
+                h.innerText = ['❤️','💖','🌸','✨'][Math.floor(Math.random()*4)];
+                h.style.left = e.clientX + 'px';
+                h.style.top = e.clientY + 'px';
+                h.style.setProperty('--dx', (Math.random()-0.5)*300 + 'px');
+                h.style.setProperty('--dy', (Math.random()-0.5)*300 + 'px');
+                h.style.setProperty('--dr', Math.random()*360 + 'deg');
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 1000);
+            }
+        }
+
+        function spawnBackground() {
+            const icons = ['💗','🕊️','🌸','💖','✨'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'bg-element';
+                el.innerText = icons[Math.floor(Math.random()*icons.length)];
+                el.style.left = Math.random()*100 + 'vw';
+                el.style.fontSize = (Math.random()*20 + 20) + 'px';
+                el.style.animationDuration = (Math.random()*4 + 6) + 's';
+                document.getElementById('bg-container').appendChild(el);
+                setTimeout(() => el.remove(), 10000);
+            }, 500);
+        }
+
+        function startTimer() {
+            const start = new Date("January 30, 2024 22:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const d = now - start;
+                const days = Math.floor(d / (1000*60*60*24));
+                const hours = Math.floor((d%(1000*60*60*24))/(1000*60*60));
+                const mins = Math.floor((d%(1000*60*60))/(1000*60));
+                const secs = Math.floor((d%(1000*60))/1000);
+                document.getElementById('timer').innerHTML = `${days} يوم | ${hours} ساعة | ${mins} دقيقة | ${secs} ثانية`;
+            }, 1000);
+        }
+
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+        }, {threshold: 0.1});
+        document.querySelectorAll('.section').forEach(s => obs.observe(s));
+
+        function showLetter() {
+            document.getElementById('letter-modal').style.display='flex';
+            const txt = "ربنا يخليكي ليا وميحرمنيش منك ابدا ياروح قلبي انتي 🥹، ويارب العمر كله مع بعض وربنا يقدرني واسعدك يا حياتي، بحبك ♡عشان انتي حبيبي انا💋🙈🥹";
+            let i = 0; const target = document.getElementById('typewriter');
+            target.innerHTML = "";
+            function type() { if(i < txt.length) { target.innerHTML += txt.charAt(i); i++; setTimeout(type, 80); } }
+            type();
+        }
+    </script>
+</body>
+</html>
+
